@@ -36,3 +36,10 @@ function getFeedHtml() {
     })
     return feedHtml
 }
+
+function render() {
+    const feed = document.getElementById('feed');
+    feed.innerHTML = getFeedHtml()
+}
+
+render()
