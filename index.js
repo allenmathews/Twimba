@@ -13,17 +13,19 @@ document.addEventListener('click', function(e) {
 })
 
 function handleLikeClick(tweetId) {
-    console.log(tweetId)
     const targetTweetObj = tweetsData.filter(function(tweet) {
         return tweet.uuid === tweetId
     })[0]
+    if (targetTweetObj.isLiked) {
+        targetTweetObj.likes--
+    }
     targetTweetObj.likes++
-        console.log(tweetsData)
+
+        render()
 }
 
 function getFeedHtml() {
     let feedHtml = ``
-
 
     tweetsData.forEach(function(tweet) {
         feedHtml += `
@@ -48,7 +50,8 @@ function getFeedHtml() {
                 </span>
                 <span class="tweet-detail">
                     <i class="fa-solid fa-retweet"
-                    data-retweet="${tweet.uuid}"></i>
+                    data-retweet="${tweet.uuid}"
+                    ></i>
                     ${tweet.retweets}
                 </span>
             </div>   
