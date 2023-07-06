@@ -11,7 +11,6 @@ document.addEventListener('click', function(e) {
     } else if (e.target.dataset.retweet) {
         handleRetweetClick(e.target.dataset.retweet)
     }
-
 })
 
 function handleLikeClick(tweetId) {
@@ -39,21 +38,62 @@ function handleRetweetClick(tweetId) {
         targetTweetObj.retweets++
     }
     targetTweetObj.isRetweeted = !targetTweetObj.isRetweeted
-
-    /*
-    Challenge:
-    2. Find the retweeted tweet's object in tweetsData 
-       and save it to a const.
-    3. Increment or decrement the retweet count of the 
-       tweet and flip its isRetweeted boolean.
-    4. Call the render function.  
-    */
+    render()
 }
 
 function getFeedHtml() {
     let feedHtml = ``
 
     tweetsData.forEach(function(tweet) {
+
+        let likeIconClass = ''
+
+        if (tweet.isLiked) {
+            likeIconClass = 'liked'
+        }
+
+        let retweetIconClass = ''
+
+        if (tweet.isRetweeted) {
+            retweetIconClass = 'retweeted'
+        }
+
+        let repliesHtml = ''
+
+        if (tweet.replies.length > 0) {
+            tweet.replies.forEach(function(reply) {
+                    repliesHtml += `
+<div class="tweet-reply">
+    <div class="tweet-inner">
+        <img src="${reply.profilePic}" class="profile-pic">
+            <div>
+                <p class="handle">${reply.handle}</p>
+                <p class="tweet-text">${reply.tweetText}</p>
+            </div>
+        </div>
+</div>
+`
+                })
+                /*
+                Challenge:
+                1. If a tweet has replies, iterate through the replies
+                   and wrap each one in the HTML template provided below. 
+                   Make sure to replace words in UPPERCASE with data from 
+                   the tweet. On each iteration, add this HTML to repliesHtml.
+                   
+                <div class="tweet-reply">
+                    <div class="tweet-inner">
+                        <img src="PROFILE PIC" class="profile-pic">
+                            <div>
+                                <p class="handle">HANDLE</p>
+                                <p class="tweet-text">TWEET TEXT</p>
+                            </div>
+                        </div>
+                </div>
+                */
+        }
+
+
         feedHtml += `
 <div class="tweet">
     <div class="tweet-inner">
@@ -69,13 +109,13 @@ function getFeedHtml() {
                     ${tweet.replies.length}
                 </span>
                 <span class="tweet-detail">
-                    <i class="fa-solid fa-heart"
+                    <i class="fa-solid fa-heart ${likeIconClass}"
                     data-like="${tweet.uuid}"
                     ></i>
                     ${tweet.likes}
                 </span>
                 <span class="tweet-detail">
-                    <i class="fa-solid fa-retweet"
+                    <i class="fa-solid fa-retweet ${retweetIconClass}"
                     data-retweet="${tweet.uuid}"
                     ></i>
                     ${tweet.retweets}
@@ -83,8 +123,18 @@ function getFeedHtml() {
             </div>   
         </div>            
     </div>
+    <div class="hidden" id="replies-${tweet.uuid}">
+        ${repliesHtml}
+    </div>   
 </div>
 `
+            /*
+            Challenge:
+            2. Place repliesHtml in its parent div remembering 
+               to update that divs id.
+            */
+
+
     })
     return feedHtml
 }
