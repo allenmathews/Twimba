@@ -45,14 +45,7 @@ function handleRetweetClick(tweetId) {
 
 function handleReplyClick(replyId) {
     document.getElementById(`replies-${replyId}`).classList.toggle('hidden')
-        /*
-        Challenge:
-        1. Use the uuid stored in 'replyId' to take control 
-           of the div containing that tweet’s replies. 
-           (Check the HTML string below to remind yourself 
-           what id that div will have.)  
-        2. Toggle the CSS class "hidden" on that div. 
-        */
+
 }
 
 function getFeedHtml() {
